@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from "react";
+import Navbar from "./components/navbar/Navbar";
+import { Home } from "./components/pages/home/Home";
+import Login from "./components/pages/login/Login";
+import Register from "./components/pages/register/Register";
+import { GlobalStyles } from "./GlobalStyles";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function App() {
+import "bootstrap/dist/css/bootstrap.css";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <GlobalStyles />
+      <Router>
+        <Navbar />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
+    </Fragment>
   );
-}
+};
 
 export default App;
