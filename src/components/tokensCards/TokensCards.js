@@ -64,13 +64,11 @@ const TokensCards = () => {
       .then(function (response) {
         // handle success
         setData(response.data);
+        console.log("MAIN TOKEN DATA:", response.data);
       })
       .catch(function (error) {
         // handle error
         console.log(error);
-      })
-      .then(function () {
-        // always executed
       });
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   NFTMainContainer,
   NFTContainer,
@@ -16,15 +16,19 @@ import axios from "axios";
 import Blockchain from "./Blockchain";
 
 const News = () => {
-  // BLOCKCHAIN STATE //
-  const [blockchainList, setBlockchainList] = useState(); // The main list of blockchains
-  const [selectedBlockchainId, setSelectedBlockchainId] = useState(); // The id of the blockchain selected by user
-  const [confirmedBlockchainId, setConfirmedBlockchainId] = useState(); // The confirmed ID after matching (selected / main list) ids
-  // NFT STATE //
+  ////////////////////////////////////////////
+  ///////////// BLOCKCHAIN STATE /////////////
+  ////////////////////////////////////////////
+  const [blockchainList, setBlockchainList] = useState([]); // The main list of blockchains
+  const [confirmedBlockchainId, setConfirmedBlockchainId] = useState([]); // The confirmed ID after matching (selected / main list) ids
+  ////////////////////////////////////////////
+  //////////////// NFT STATE /////////////////
+  ////////////////////////////////////////////
   const [nftList, setNftList] = useState(); // The NFT list from the selected blockchain
-  const [selectedNftId, setSelectedNftId] = useState(); // The id of the NFT selected by user
   const [confirmedNft, setConfirmedNft] = useState();
-
+  ////////////////////////////////////////////
+  ////////////SINGLE NFT STATE ///////////////
+  ////////////////////////////////////////////
   const [floorPrice, setFloorPrice] = useState();
   const [contractAddress, setContactAddress] = useState();
   const [image, setImage] = useState();
@@ -32,70 +36,58 @@ const News = () => {
   const [totalSupply, setTotalSupply] = useState();
   const [percentChange, setPercentChange] = useState();
 
-  // The Main API call for list of NFT Compatable blockchains
-  useEffect(() => {
-    axios
-      .get("https://api.coingecko.com/api/v3/asset_platforms?filter=nft")
-      .then(function (response) {
-        setBlockchainList(response.data); // Set main list of blockchains
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  }, []);
+  ////////////////////////////////////////////////////////////////////////////////////////
 
+  ////////////////////////////////////////////
+  //////////// RESPONSES FROM USER ///////////
+  ////////////////////////////////////////////
   // This receives the id from the desired blockchain as selected by user
   const handleSelect = (event) => {
-    setSelectedBlockchainId(event.target.value); // Sets the selected blockchains id
-    handleSingleBlockchain(selectedBlockchainId);
+    handleSingleBlockchain(event.target.value);
   };
   // This receives the id from the desired NFT as selected by user
   const handleNftSelect = (event) => {
-    setSelectedNftId(event.target.value);
-    handleSingleNft(selectedNftId);
+    handleSingleNft(event.target.value);
   };
 
-  const handleSingleNft = (nftId) => {
-    if (nftList.filter((nftId) => nftId === nftList.id)) {
-      setConfirmedNft(nftId);
-      console.log(confirmedNft);
-    }
-    axios
-      .get(
-        `https://api.coingecko.com/api/v3/nfts/${confirmedNft}
-    `
-      )
-      .then(function (response) {
-        setContactAddress(response.data.contract_address);
-        setImage(response.data.image.small);
-        setFloorPrice(response.data.floor_price["usd"].toFixed(2));
-        setName(response.data.name);
-        setTotalSupply(response.data.total_supply);
-        setPercentChange(
-          response.data.floor_price_in_usd_24h_percentage_change.toFixed(2)
-        );
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error.message);
-      })
-      .then(function () {});
-  };
+  ////////////////////////////////////////////////////////////////////////////////////////
 
+  ////////////////////////////////////////////
+  //////////// ID CHECS CONFIRM //////////////
+  ////////////////////////////////////////////
   // Checks the id of the selected blockchain against the blockchain list in state
   // Then API calls to get that NFTs specific data
-  const handleSingleBlockchain = (blockchainId) => {
+  const handleSingleBlockchain = async (blockchainId) => {
+    console.log("BLOCKCHAIN BEFORE FILTER: ", blockchainId);
+    console.log("FILTERING...");
     if (
       blockchainList.filter(
         (blockchainId) => blockchainId === blockchainList.id
       )
     ) {
+      console.log("FILTER COMPLETE...");
       setConfirmedBlockchainId(blockchainId);
-      console.log(blockchainId);
+      console.log("FILTERED BLOCKCHAIN after: ", blockchainId);
     }
+  };
+  const handleSingleNft = async (nftId) => {
+    console.log("NFT BEFORE FILTER: ", nftId);
+    console.log("FILTERING...");
+    if (nftList.filter((nftId) => nftId === nftList.id)) {
+      console.log("FILTER COMPLETE");
+      setConfirmedNft(nftId);
+      console.log("FILTERED NFT after: ", nftId);
+    }
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////
+  /////////// CALLBACKS - API CALLS //////////
+  ////////////////////////////////////////////
+  useEffect(() => {
+    // const handleBlockchainApi = () => {
+    console.log("API CALL FROM CONFIRMED STATE: ", confirmedBlockchainId);
     axios
       .get(
         `https://api.coingecko.com/api/v3/nfts/list?asset_platform_id=${confirmedBlockchainId}`
@@ -105,9 +97,46 @@ const News = () => {
       })
       .catch(function (error) {
         console.log(error.message);
+      });
+    // };
+  }, [confirmedBlockchainId]);
+
+  useEffect(() => {
+    console.log("API CALL FROM CONFIRMED STATE: ", confirmedNft);
+    axios
+      .get(`https://api.coingecko.com/api/v3/nfts/${confirmedNft}`)
+      .then(function (response) {
+        setContactAddress(response.data.contract_address);
+        setImage(response.data.image.small);
+        setFloorPrice(response.data.floor_price["usd"].toFixed(2));
+        setName(response.data.name);
+        setTotalSupply(response.data.total_supply);
+        setPercentChange(
+          response.data.floor_price_in_usd_24h_percentage_change.toFixed(2)
+        );
       })
-      .then(function () {});
-  };
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }, [confirmedNft]);
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////
+  ////////////// MAIN API CALL ///////////////
+  ////////////////////////////////////////////
+  useEffect(() => {
+    axios
+      .get("https://api.coingecko.com/api/v3/asset_platforms?filter=nft")
+      .then(function (response) {
+        // handle success
+        setBlockchainList(response.data); // Set main list of blockchains
+        console.log("MAIN NFT DATA:", response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <NFTMainContainer>
@@ -116,7 +145,9 @@ const News = () => {
           {/* SELECT BLOCKCHAIN */}
           <h5>Select Blockchain</h5>
           <select name="nft" id="nft" onChange={handleSelect}>
-            <option value="selected">Blockchain</option>
+            {/* <option value="selected" disabled>
+              Blockchain
+            </option> */}
             {blockchainList &&
               blockchainList.map((blockchain, key) => {
                 return (
@@ -131,12 +162,14 @@ const News = () => {
         <NFTUserSelectTwo>
           <h5>Select NFT Project</h5>
           <select onChange={handleNftSelect}>
-            <option defaultValue="selected">NFT Project</option>
+            {/* <option value="selected" disabled>
+              NFT Project
+            </option> */}
             {nftList &&
-              nftList.map((data, key) => {
+              nftList.map((nft, key) => {
                 return (
-                  <option key={key} value={data.id}>
-                    {data.name}
+                  <option key={key} value={nft.id}>
+                    {nft.name}
                   </option>
                 );
               })}
