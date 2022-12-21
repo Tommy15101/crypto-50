@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Chart from "react-apexcharts";
 import moment from "moment";
-import { TokenChartContainer } from "./TokenChartStyles";
 
 const TokenChart = ({ chartData }) => {
-  const [options, setOptions] = useState({
+  const options = {
     chart: {
       width: "100%",
       id: "basic-bar",
@@ -34,8 +33,8 @@ const TokenChart = ({ chartData }) => {
         options: {},
       },
     ],
-  });
-  const [series, setSeries] = useState([
+  };
+  const series = [
     {
       name: "series-1",
       data: chartData.map((value) => value.y),
@@ -44,7 +43,7 @@ const TokenChart = ({ chartData }) => {
         colors: ["#ffa500"],
       },
     },
-  ]);
+  ];
 
   return (
     <div className="app">

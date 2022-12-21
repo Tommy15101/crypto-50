@@ -49,15 +49,13 @@ const News = () => {
 
   // This receives the id from the desired blockchain as selected by user
   const handleSelect = (event) => {
-    const blockchainId = event.target.value;
     setSelectedBlockchainId(event.target.value); // Sets the selected blockchains id
-    handleSingleBlockchain(blockchainId);
+    handleSingleBlockchain(selectedBlockchainId);
   };
   // This receives the id from the desired NFT as selected by user
   const handleNftSelect = (event) => {
-    const nftId = event.target.value;
     setSelectedNftId(event.target.value);
-    handleSingleNft(nftId);
+    handleSingleNft(selectedNftId);
   };
 
   const handleSingleNft = (nftId) => {
