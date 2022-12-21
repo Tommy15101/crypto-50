@@ -9,6 +9,8 @@ import {
   NFTResultsHeader,
   NFTResultsTitle,
   NFTResultsData,
+  NFTNoProjectSelected,
+  Note,
 } from "./NFTStyled";
 import axios from "axios";
 import Blockchain from "./Blockchain";
@@ -116,7 +118,7 @@ const News = () => {
           {/* SELECT BLOCKCHAIN */}
           <h5>Select Blockchain</h5>
           <select name="nft" id="nft" onChange={handleSelect}>
-            <option value="disabled">Blockchain</option>
+            <option value="selected">Blockchain</option>
             {blockchainList &&
               blockchainList.map((blockchain, key) => {
                 return (
@@ -131,7 +133,7 @@ const News = () => {
         <NFTUserSelectTwo>
           <h5>Select NFT Project</h5>
           <select onChange={handleNftSelect}>
-            <option value="disabled">NFT Project</option>
+            <option defaultValue="selected">NFT Project</option>
             {nftList &&
               nftList.map((data, key) => {
                 return (
@@ -185,10 +187,17 @@ const News = () => {
               </NFTResultsInfo>
             </>
           ) : (
-            <p>
-              Please select a blockchain and NFT project to see the details.
-              Peace.
-            </p>
+            <NFTNoProjectSelected>
+              <p>
+                Please select a blockchain and NFT project to see the details.
+                Peace.
+              </p>
+              <Note>
+                This NFT sections data is in beta as per {""}
+                <a href="https://www.coingecko.com/">coin gecko</a>
+              </Note>
+              <Note>(This project is independant of coin gecko)</Note>
+            </NFTNoProjectSelected>
           )}
         </NFTResults>
       </NFTContainer>

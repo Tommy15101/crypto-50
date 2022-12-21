@@ -164,11 +164,41 @@ export const NFTResultsData = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
+  justify-content: space-evenly;
 
   width: 100%;
   height: 100%;
 
   p {
     padding-left: 20px;
+  }
+
+  a {
+    padding-left: 20px;
+    padding-bottom: 15px;
+  }
+`;
+
+export const NFTNoProjectSelected = styled.div`
+  grid-row-start: 1;
+  grid-column-start: 1;
+  grid-row-end: 4;
+  grid-column-end: 4;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    color: white;
+    font-size: 25px;
+  }
+`;
+export const Note = styled.div`
+  font-size: 16px;
+
+  a {
+    color: green;
   }
 `;

@@ -5,8 +5,11 @@ import {
   ModalSymbol,
   ModalChart,
   ModalInfo,
+  CloseModal,
 } from "./ModalStyles";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 import TokenChart from "../tokenChart/TokenChart";
 
@@ -17,6 +20,10 @@ const Modal = ({ modal, token, chartData }) => {
     <>
       <ModalBackdrop onClick={modal} />
       <ModalContainer>
+        <CloseModal onClick={modal}>
+          <FontAwesomeIcon icon={faClose} />
+        </CloseModal>
+
         <ModalSymbol>
           <img src={token.image} alt="token" />
           <h2>{token.name}</h2>

@@ -90,15 +90,11 @@ export const ModalInfo = styled.div`
 
 export const CloseModal = styled.div`
   position: absolute;
-  top: 23px;
-  right: 30px;
+  top: 20px;
+  left: 30px;
   cursor: pointer;
-
-  p {
-    font-size: 20px;
-    font-weight: bolder;
-    &: hover {
-      transform: scale(1.05);
-    }
+  font-size: 30px;
+  &: hover {
+    transform: scale(1.05);
   }
 `;
