@@ -45,3 +45,12 @@ export const NavbarLinksContainer = styled.div`
     }
   }
 `;
+
+export const Branding = styled.h2`
+  color: orange;
+  text-transform: uppercase;
+  font-size: 22px;
+  letter-spacing: 5px;
+  font-family: cursive;
+  padding-left: 20px;
+`;

@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+export const TokenCardsMainContainer = styled.div`
+  height: 100%;
+  width: 100vw;
+`;
+
 export const TokenCardHeading = styled.h2`
   text-align: center;
   padding: 0;
@@ -15,7 +20,7 @@ export const CardContainer = styled.section`
   width: auto;
   overflow: hidden;
   border-radius: 20px;
-  margin: 50px 50px 0 50px;
+  margin: 25px 50px 0 50px;
 
   display: flex;
 
@@ -35,8 +40,13 @@ export const Card = styled.div`
 
   border: 2px solid orange;
   border-radius: 10px;
-
   margin: 10px 40px;
+
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 export const CardImg = styled.div`
   grid-row-start: 1;
@@ -62,7 +72,7 @@ export const CardSymbol = styled.div`
   padding: 10px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   h3 {
     text-transform: uppercase;
     font-size: 15px;
@@ -80,4 +90,38 @@ export const CardData = styled.div`
     padding: 0 10px;
     margin-bottom: 5px;
   }
+`;
+
+export const CoinGecko = styled.div`
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  margin: 0;
+`;
+export const CoinGeckoText = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
+  p {
+    margin: 0;
+    letter-spacing: 5px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  a {
+    letter-spacing: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    color: green;
+    text-decoration: none;
+  }
+  img {
+    position: absolute;
+    bottom: 1px;
+    width: 25px;
+  }
+`;
+export const CoinGeckoPlaceholder = styled.div`
+  height: 100%;
+  width: 100%;
 `;
